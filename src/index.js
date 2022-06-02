@@ -50,9 +50,11 @@ import './index.css';
       this.state = {
         history: [{
           squares: Array(9).fill(null),
+          position: null,
         }],
         stepNumber: 0,
         xIsNext: true,
+        
       };
     }
 
@@ -67,9 +69,11 @@ import './index.css';
       this.setState({
         history: history.concat([{
           squares: squares,
+          position: i,
         }]),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext,
+        
       });
     }
 
@@ -84,10 +88,11 @@ import './index.css';
       const history = this.state.history;
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
+      // const coordinates = getCoordinatas(current.position);
 
       const moves = history.map((step, index) => {
         const desc = index ?
-        'Go to move #' + index :
+        'Go to move #' + index + ' ' + getCoordinatas(step.position) :
         'Go to game start';
       return (
         <li key={index}>
@@ -119,6 +124,12 @@ import './index.css';
     }
   }
 
+  
+  // ========================================
+  
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(<Game />);
+  
   function calculateWinner(squares) {
     const lines = [
       [0, 1, 2],
@@ -138,9 +149,27 @@ import './index.css';
     }
     return null;
   }
-  
-  // ========================================
-  
-  const root = ReactDOM.createRoot(document.getElementById("root"));
-  root.render(<Game />);
+
+  function getCoordinatas(position) {
+    switch(position) {
+      case 0:
+        return '(1,1)';
+      case 1:
+        return '(2,1)';
+      case 2:
+        return '(3,1)';
+      case 3:
+         return '(1,2)';
+      case 4:
+        return '(2,2)';
+      case 5:
+        return '(3,2)';
+      case 6:
+        return '(1,3)';
+      case 7:
+         return '(2,3)';
+      case 8:
+        return '(3,3)';
+    }
+  }
   

@@ -14,7 +14,7 @@ import './index.css';
 
     renderSquare(i) {
       return (
-        <Square 
+        <Square   
           value={this.props.squares[i]}
           onClick={() => this.props.onClick(i)}
         />
@@ -22,23 +22,17 @@ import './index.css';
     }
   
     render() {
+      const rows = [];
+      for(let x=0; x<3; x++) {
+        const cols = [];
+        for(let y=0; y<3; y++) {
+          cols.push(<span key={(x * 3) + y}>{this.renderSquare((x * 3) + y)}</span>)
+        }
+        rows.push(<div key={x} className="board-row">{cols}</div>);
+      }
       return (
         <div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
+          {rows}
         </div>
       );
     }

@@ -52,7 +52,7 @@ import './index.css';
       };
     }
 
-    handleClick(i) {
+    handleClick(i, moves) {
       const history = this.state.history.slice(0, this.state.stepNumber + 1);
       const current = history[history.length - 1];
       const squares = current.squares.slice();
@@ -67,7 +67,7 @@ import './index.css';
         }]),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext,
-        
+        moves: [...moves],      
       });
     }
 
@@ -76,6 +76,16 @@ import './index.css';
         stepNumber: step,
         xIsNext: (step % 2) === 0,
       });
+    }
+
+    sortMoves() {
+
+      const reversedMoves = this.state.moves.slice().reverse();
+
+      this.setState({
+        moves: reversedMoves,
+      });
+
     }
 
     render() {
@@ -87,12 +97,19 @@ import './index.css';
         const desc = index ?
         'Go to move #' + index + ' ' + getCoordinatas(step.position) :
         'Go to game start';
-      return (
-        <li key={index}>
-          <button style={this.state.stepNumber === index ? {fontWeight: 'bold'} : {fontWeight: 'normal'}} onClick={() => this.jumpTo(index)}>{desc}</button>
-        </li>
-      );
-    });
+
+    
+        return (
+          <li key={index}>
+            <button 
+              style={this.state.stepNumber === index ? {fontWeight: 'bold'} : {fontWeight: 'normal'}} 
+              onClick={() => this.jumpTo(index)}>
+                {desc}
+            </button>
+          </li>
+        );
+      });
+    
 
       let status;
       if (winner) {
@@ -105,12 +122,19 @@ import './index.css';
           <div className="game-board">
             <Board 
             squares={current.squares}
-            onClick={(i) => this.handleClick(i)} 
+            onClick={(i) => this.handleClick(i, moves)} 
             />
           </div>
           <div className="game-info">
-            <div>{ status }</div>
-            <ol>{moves}</ol>
+            <div>
+              <div>
+                { status }
+              </div>
+              <button onClick={() => this.sortMoves()}>
+                Sort moves
+              </button>
+            </div>
+            <ol>{this.state.moves}</ol>
           </div>
         </div>
       );

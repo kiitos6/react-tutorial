@@ -48,7 +48,7 @@ import './index.css';
         }],
         stepNumber: 0,
         xIsNext: true,
-        
+        winnerLines: null    
       };
     }
 
@@ -59,7 +59,9 @@ import './index.css';
       if (calculateWinner(squares) || squares[i]) {
         return;
       }
+
       squares[i] = this.state.xIsNext ? 'X' : 'O';
+      this.state.winnerLines = calculateWinner(squares)?.line;
       this.setState({
         history: history.concat([{
           squares: squares,
@@ -67,7 +69,7 @@ import './index.css';
         }]),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext,
-        moves: [...moves],      
+        moves: [...moves],  
       });
     }
 
@@ -91,7 +93,7 @@ import './index.css';
     render() {
       const history = this.state.history;
       const current = history[this.state.stepNumber];
-      const winner = calculateWinner(current.squares);
+      const winner = calculateWinner(current.squares)?.player;
 
       const moves = history.map((step, index) => {
         const desc = index ?
@@ -161,7 +163,8 @@ import './index.css';
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        // this.setState({winnerLines: lines[i]})
+        return {player: squares[a], line: lines[i]};
       }
     }
     return null;

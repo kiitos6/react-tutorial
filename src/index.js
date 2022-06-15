@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
   function Square(props) {
+    console.log(props);
     return (
-      <button className="square" onClick={props.onClick}>
-        {props.value}
+      <button className="square" onClick={props.onClick} style={{color: props.winnerLines?.includes(props.position) ? 'red' : 'black'}}>
+        {props.value} 
       </button>
     );
+    
   }
   
   class Board extends React.Component {
@@ -17,6 +19,8 @@ import './index.css';
         <Square   
           value={this.props.squares[i]}
           onClick={() => this.props.onClick(i)}
+          winnerLines={this.props.winnerLines}
+          position={i}
         />
         );
     }
@@ -124,7 +128,8 @@ import './index.css';
           <div className="game-board">
             <Board 
             squares={current.squares}
-            onClick={(i) => this.handleClick(i, moves)} 
+            onClick={(i) => this.handleClick(i, moves)}
+            winnerLines={this.state.winnerLines}
             />
           </div>
           <div className="game-info">

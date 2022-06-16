@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
   function Square(props) {
-    console.log(props);
     return (
       <button className="square" onClick={props.onClick} style={{color: props.winnerLines?.includes(props.position) ? 'red' : 'black'}}>
         {props.value} 
@@ -60,12 +59,14 @@ import './index.css';
       const history = this.state.history.slice(0, this.state.stepNumber + 1);
       const current = history[history.length - 1];
       const squares = current.squares.slice();
+
       if (calculateWinner(squares) || squares[i]) {
         return;
       }
 
       squares[i] = this.state.xIsNext ? 'X' : 'O';
       this.state.winnerLines = calculateWinner(squares)?.line;
+
       this.setState({
         history: history.concat([{
           squares: squares,
@@ -120,6 +121,8 @@ import './index.css';
       let status;
       if (winner) {
         status = 'Winner: ' + winner;
+      } else if(current.squares.filter(square => square == null).length === 0) {
+        status = 'Ha habido un EMPATE!!';
       } else {
         status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       }
